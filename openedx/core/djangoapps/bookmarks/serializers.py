@@ -7,7 +7,8 @@ import six
 from rest_framework import serializers
 
 from openedx.core.lib.api.serializers import CourseKeyField, UsageKeyField
-from openedx.core.apidocs import is_schema_request
+
+from edx_api_doc_tools import is_schema_request
 
 
 from . import DEFAULT_FIELDS, OPTIONAL_FIELDS
