@@ -13,7 +13,6 @@ from lms.djangoapps.courseware.tabs import get_course_tab_list
 from openedx.core.djangoapps.models.course_details import CourseDetails
 from openedx.core.lib.api.fields import AbsoluteURLField
 from student.models import CourseEnrollment
-from xmodule.modulestore.django import modulestore
 
 
 class _MediaSerializer(serializers.Serializer):  # pylint: disable=abstract-method
@@ -152,17 +151,14 @@ class CourseWithTabsSerializer(CourseSerializer):
         """
         Return course tab metadata.
         """
-        # Ideally, we wouldn't have to load the course, but get_course_tabs won't work
-        # with a CourseOverview without more refactoring.
-        course = modulestore().get_course(course_overview.id)
         tabs = []
-        for priority, tab in enumerate(get_course_tab_list(self.user, course)):
+        for priority, tab in enumerate(get_course_tab_list(self.user, course_overview)):
             tabs.append({
                 'title': tab.title,
                 'slug': tab.tab_id,
                 'priority': priority,
                 'type': tab.type,
-                'url': tab.link_func(course, reverse),
+                'url': tab.link_func(course_overview, reverse),
             })
         return tabs
 

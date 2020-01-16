@@ -186,9 +186,15 @@ class CourseDetailViewV2(CourseDetailView):
     serializer_class = CourseWithTabsSerializer
 
     def get_serializer_context(self):
+        """
+        Return extra context to be used by the serializer class.
+        """
         context = super().get_serializer_context()
         context['requested_fields'] = self.request.GET.get('requested_fields', None)
-        context['user'] = get_user_model().objects.get(username=self.requested_username)
+        user = self.request.user
+        if self.requested_username != user.username:
+            user = get_user_model().objects.get(username=self.requested_username)
+        context['user'] = user
         return context
 
 
