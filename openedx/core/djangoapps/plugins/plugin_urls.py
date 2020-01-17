@@ -14,9 +14,8 @@ def get_patterns(project_type):
     return [
         url(
             url_config.get(constants.PluginURLs.REGEX, r''),
-            include((url_module_path, url_config.get(constants.PluginURLs.APP_NAME)),
-                    namespace=url_config[constants.PluginURLs.NAMESPACE],
-                    )
+            include((url_module_path, url_config.get(constants.PluginURLs.APP_NAME))),
+            namespace=url_config[constants.PluginURLs.NAMESPACE],
         )
         for url_module_path, url_config in _iter_plugins(project_type)
     ]
